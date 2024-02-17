@@ -18,13 +18,13 @@ export class UserRoles extends Model<UserRoles> {
   })
   id: number;
 
-  @ForeignKey(() => User)
+  @ForeignKey(() => Role)
   @Column({
     type: DataType.NUMBER,
   })
   roleId: number;
 
-  @ForeignKey(() => Role)
+  @ForeignKey(() => User)
   @Column({
     type: DataType.NUMBER,
   })
