@@ -26,7 +26,6 @@ export class RolesGuard implements CanActivate {
         [context.getHandler(), context.getClass()],
       );
       if (!requiredRoles) {
-        // no roles required???
         return true;
       }
 
@@ -42,7 +41,17 @@ export class RolesGuard implements CanActivate {
       const user = this.jwtService.verify(token);
       request.user = user;
 
-      return user.roles.some((role) => requiredRoles.includes(role.value));
+      const hasAccess = user.roles.some((role) =>
+        requiredRoles.includes(role.value),
+      );
+
+      // In case of false it returns by default 403 Error.
+      // This is just an example of custom error handling
+      if (!hasAccess) {
+        throw new HttpException('No access.', HttpStatus.FORBIDDEN);
+      }
+
+      return true;
     } catch (error) {
       throw new HttpException('No access.', HttpStatus.FORBIDDEN);
     }
