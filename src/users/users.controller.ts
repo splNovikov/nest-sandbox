@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UsersService } from './users.service';
@@ -6,6 +6,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './users.model';
 import { Roles } from '../auth/roles.auth.decorator';
 import { RolesGuard } from '../auth/roles.guard';
+import { AddRoleDTO } from './dto/add-role.dto';
+import { BanUserDTO } from './dto/ban-user.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -26,5 +28,23 @@ export class UsersController {
   @Get()
   getAll() {
     return this.usersService.getAllUsers();
+  }
+
+  @ApiOperation({ summary: 'Add roles to User' })
+  @ApiResponse({ status: 200 })
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  @Post('/role')
+  addRole(@Body() dto: AddRoleDTO) {
+    return this.usersService.addRole(dto);
+  }
+
+  @ApiOperation({ summary: 'Ban User' })
+  @ApiResponse({ status: 200 })
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  @Post('/ban')
+  ban(@Body() dto: BanUserDTO) {
+    return this.usersService.ban(dto);
   }
 }

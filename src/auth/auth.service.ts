@@ -50,6 +50,13 @@ export class AuthService {
 
   private async validateUser(userDTO: CreateUserDTO) {
     const user = await this.userService.getUserByEmail(userDTO.email);
+
+    if (!user) {
+      throw new UnauthorizedException({
+        message: 'User Not Found',
+      });
+    }
+
     const passwordIsValid = await bcrypt.compare(
       userDTO.password,
       user.password,
