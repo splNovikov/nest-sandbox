@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const PORT = process.env.PORT || 5001;
@@ -16,6 +17,9 @@ async function bootstrap() {
   SwaggerModule.setup('/api/docs', app, document);
   // a guard for ALL endpoints example:
   // app.useGlobalGuards(JwtAuthGuard);
+
+  // Global Pipes example:
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(PORT, () =>
     console.log(`Server is running on port ${PORT}`),
