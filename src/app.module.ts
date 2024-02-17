@@ -5,6 +5,7 @@ import * as process from 'process';
 
 import { UsersModule } from './users/users.module';
 import { User } from './users/users.model';
+import { RolesModule } from './roles/roles.module';
 
 @Module({
   controllers: [],
@@ -24,6 +25,7 @@ import { User } from './users/users.model';
       autoLoadModels: true,
     }),
     UsersModule,
+    RolesModule,
   ],
 })
 export class AppModule {}
